@@ -1,52 +1,24 @@
 ﻿@page "/fetchdata"
 @using BlazorApp.Shared 
 @inject HttpClient Http
+@inherits FetchDataBase
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
-@if (forecasts == null)
+@if (prices == null)
 {
-    <p><em>Loading...</em></p>
+        
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
+    <MudContainer Class="mt-16">
+        <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">$PRICES</MudText> 
+        <MudText Align="Align.Center">SignalR status: <MudText Align="Align.Center" Color="@(hubConnection.State.ToString() is "Connected" ? MudBlazor.Color.Success : MudBlazor.Color.Error)">@hubConnection.State</MudText></MudText> 
+        <MudGrid Class="mt-8">
+            @foreach(var coin in prices)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+                <Ticker Coin="@coin"></Ticker>
             }
-        </tbody>
-    </table>
-}
-
-@code {
-    private WeatherForecast[] forecasts = new WeatherForecast[]{};
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast") ?? new WeatherForecast[]{};
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
+        </MudGrid>
+    </MudContainer>
+         
 }
