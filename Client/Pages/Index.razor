@@ -1,21 +1,23 @@
 ﻿@page "/"
+@using BlazorApp.Shared 
+@inject HttpClient Http
+@inherits FetchDataBase
 
-    
-<MudContainer Class="mt-16">
-    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">WELCOME</MudText>
-</MudContainer>
-
-
-
-
-
-
-@code {
-  
-   
-    bool disabled = false;
-  
-
+@if (prices == null)
+{
+        
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
-    
-
+else
+{
+    <MudContainer Class="mt-16">
+         <MudText Align="Align.Center">SignalR status: <MudText Align="Align.Center" Color="@(hubConnection.State.ToString() is "Connected" ? MudBlazor.Color.Success : MudBlazor.Color.Error)">@hubConnection.State</MudText></MudText> 
+          <MudGrid Class="mt-8">
+            @foreach(var coin in prices)
+            {
+                <Ticker Coin="@coin"></Ticker>
+            }
+        </MudGrid>
+    </MudContainer>
+         
+}

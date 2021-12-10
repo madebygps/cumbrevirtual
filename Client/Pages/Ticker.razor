@@ -1,5 +1,6 @@
 @using BlazorApp.Shared
 <MudItem xs="12" sm="6" md="4">
+    <Animate Animation="Animations.FlipUp" Duration="TimeSpan.FromSeconds(1)" Once="false">
         <MudCard Elevation="25" Class="rounded-lg pb-4">
             <MudCardHeader>
                 <CardHeaderContent>
@@ -14,7 +15,9 @@
 
             <MudCardContent>
                 <div class="d-flex justify-center">
+                    <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.5)" Once="false">
                         <MudText Typo="Typo.h5">$@coin.current_price</MudText>
+                    </Animate>
                     <MudText Typo="Typo.subtitle1" Class="ml-1 mt-5" Color="MudBlazor.Color.Secondary">/Current Price
                     </MudText>
                 </div>
@@ -22,14 +25,17 @@
                     <MudListItem Icon="@Icons.Material.Filled.Analytics">
                         @coin.market_cap.ToString("C") USD
                     </MudListItem>
-                    <MudListItem
-                        Icon="@(coin.price_change_percentage_24h > 0? @Icons.Material.Filled.ArrowUpward: @Icons.Material.Filled.ArrowDownward)"
-                        IconColor="@(coin.price_change_percentage_24h > 0? MudBlazor.Color.Success: MudBlazor.Color.Error)">
-                        @coin.price_change_percentage_24h%
-                    </MudListItem>
+                    <Animate Animation="Animations.ZoomOutRight" Duration="TimeSpan.FromSeconds(1)" Once="false">
+                        <MudListItem
+                            Icon="@(coin.price_change_percentage_24h > 0? @Icons.Material.Filled.ArrowUpward: @Icons.Material.Filled.ArrowDownward)"
+                            IconColor="@(coin.price_change_percentage_24h > 0? MudBlazor.Color.Success: MudBlazor.Color.Error)">
+                            @coin.price_change_percentage_24h%
+                        </MudListItem>
+                    </Animate>
                 </MudList>
             </MudCardContent>
         </MudCard>
+    </Animate>
 </MudItem>
 
 @code {
